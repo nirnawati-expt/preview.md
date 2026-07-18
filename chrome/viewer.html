@@ -9,10 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✒️</text></svg>"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>"
     />
-    <title>preview.md</title>
-    <script src="suppress.js"></script>
+    <title>📄 preview.md</title>
     <script src="tailwind.js"></script>
     <script src="marked.min.js"></script>
     <script src="viewer.js" type="module"></script>
@@ -50,6 +49,17 @@
         --color-text-code: #a6e22e;
         --color-accent: #f92672;
         --color-border: #49483e;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: revert !important;
+        line-height: normal !important;
+        line-break: loose;
       }
 
       .preview-content {
@@ -218,7 +228,7 @@
       }
 
       .preview-content img:not([width]):not([height]) {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: auto;
         object-fit: cover;
       }
 
@@ -229,30 +239,30 @@
     </style>
   </head>
   <body
-    class="h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden"
+    class="h-screen flex flex-col bg-stone-50 dark:bg-stone-900 text-gray-900 dark:text-gray-100 overflow-hidden"
   >
     <nav
-      class="h-14 bg-gray-600 text-white flex items-center justify-between px-4 z-40 shrink-0 shadow-md"
+      class="h-14 bg-stone-600 text-white flex items-center justify-between px-4 z-40 shrink-0 shadow-md"
     >
       <div class="text-lg font-bold tracking-wide">📄 preview.md</div>
 
       <div class="flex items-center space-x-2">
         <button
           id="zoom-in-btn"
-          class="px-3 py-1.5 text-xs font-bold bg-gray-700 hover:bg-gray-800 rounded transition text-white"
+          class="px-3 py-1.5 text-xs font-bold bg-stone-700 hover:bg-stone-800 rounded transition text-white"
         >
           Zoom In
         </button>
         <button
           id="zoom-out-btn"
-          class="px-3 py-1.5 text-xs font-bold bg-gray-700 hover:bg-gray-800 rounded transition text-white"
+          class="px-3 py-1.5 text-xs font-bold bg-stone-700 hover:bg-stone-800 rounded transition text-white"
         >
           Zoom Out
         </button>
 
         <button
           id="theme-btn"
-          class="px-3 py-1.5 text-xs font-semibold bg-gray-700 hover:bg-gray-800 rounded transition text-white"
+          class="px-3 py-1.5 text-xs font-semibold bg-stone-700 hover:bg-stone-800 rounded transition text-white"
         >
           ☀️
         </button>
@@ -268,7 +278,7 @@
     <main class="flex flex-1 h-[calc(100vh-3.5rem)] overflow-hidden relative">
       <div
         id="preview-container"
-        class="w-full h-full overflow-y-auto p-6 bg-white dark:bg-gray-900 relative transition-all duration-300"
+        class="w-full h-full overflow-y-auto p-6 bg-white dark:bg-stone-900 relative transition-all duration-300"
       >
         <div id="preview" class="preview-content max-w-none"></div>
       </div>

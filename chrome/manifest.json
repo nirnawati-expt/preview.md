@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Markdown Reader",
-  "description": "Markdown viewer",
+  "name": "preview.md - Free Markdown Viewer",
+  "description": "Open, read, done. Offline markdown viewer for your browser.",
   "version": "1.0",
   "permissions": ["tabs"],
   "action": {

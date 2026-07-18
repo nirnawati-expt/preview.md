@@ -97,17 +97,6 @@ function renderMarkdown() {
   });
 }
 
-if (encodedFileName) {
-  document.title = "preview.md: " + decodeURIComponent(encodedFileName);
-}
-
-if (encodedMarkdown) {
-  renderMarkdown();
-
-  const targetDiv = document.getElementById("preview");
-  targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
-}
-
 function postprocess(html) {
   let processedHtml = html
     .replace(/==([^=]+)==/g, "<mark>$1</mark>")
@@ -115,3 +104,16 @@ function postprocess(html) {
     .replace(/<del>([\s\S]*?)<\/del>/g, "<sub>$1</sub>");
   return processedHtml;
 }
+
+if (encodedFileName) {
+  document.title = "📄 preview.md: " + decodeURIComponent(encodedFileName);
+}
+
+// option 1 - short bcs using url encoding
+if (encodedMarkdown) {
+  renderMarkdown();
+  const targetDiv = document.getElementById("preview");
+  targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
+}
+
+// option 2 - using temp storage

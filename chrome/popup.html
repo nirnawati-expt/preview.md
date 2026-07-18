@@ -1,23 +1,46 @@
 <!doctype html>
-<html>
+<html lang="id">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <title>📄 preview.md: offline markdown reader</title>
+    <script src="tailwind.js"></script>
     <style>
       body {
-        width: 350px;
-        padding: 15px;
-        font-family: sans-serif;
+        width: 320px;
       }
-      #output {
-        margin-top: 15px;
-        border-top: 1px solid #ccc;
-        padding-top: 10px;
+      .file-chooser input[type="file"] {
+        display: none;
+      }
+      .file-input-label {
+        cursor: pointer;
       }
     </style>
   </head>
-  <body>
-    <h3>Upload File Markdown</h3>
-    <input type="file" id="fileInput" accept=".md" />
-    <script src="popup.js"></script>
+  <body
+    class="shadow-sm rounded-lg border font-sans bg-gradient-to-b from-stone-900/70 to-stone-900/90 border-stone-900/50"
+  >
+    <div class="m-2">
+      <div
+        class="flex items-center justify-between p-1 border-b border-stone-300"
+      >
+        <h3 class="text-sm font-medium tracking-wide text-stone-300">
+          📄 preview.md
+        </h3>
+        <span class="text-[10px] font-mono text-stone-400">v1.0</span>
+      </div>
+      <label class="block text-xs font-medium text-stone-400 mt-2">
+        Read markdown instantly, 100% offline.
+      </label>
+    </div>
+    <div id="file-chooser" class="file-chooser pt-4 pb-4">
+      <label
+        for="file-chooser"
+        id="file-input-label"
+        class="file-input-label text-stone-200 bg-gradient-to-b from-stone-900/90 to-stone-900 border-stone-900/50 border-stone-900 border-solid rounded hover p-2 m-2"
+        >View Now</label
+      >
+      <input type="file" id="file-input" accept=".md" />
+    </div>
   </body>
+  <script src="popup.js"></script>
 </html>
