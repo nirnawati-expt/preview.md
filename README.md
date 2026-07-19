@@ -18,7 +18,7 @@ A free and minimalist browser extension to read local Markdown files instantly. 
 Due to **built-in browser security restrictions** (Browser Security Sandbox), this extension has the following limitations enforced to protect your local file system:
 
 - **Local Files:** The extension cannot directly open files via direct local URLs (e.g., file:///path/to/file.md), any link using local file paths or local relative path will not render.
-- **Local Images:** Images embedded using local file paths (e.g., ![Image](file:///path/to/image.png) or local relative paths) will not render, as browsers block extensions from loading local assets.
+- **Local Images:** Images embedded using local file paths (e.g., `![Image](file:///path/to/image.png)` or local relative paths) will not render, as browsers block extensions from loading local assets.
 
 **How to Work Around This:**
 
