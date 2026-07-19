@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>📄 preview.md: offline markdown reader</title>
+    <title>📄 preview.md - Markdown Viewer</title>
     <script src="tailwind.js"></script>
     <style>
       body {
@@ -17,27 +17,28 @@
     </style>
   </head>
   <body
-    class="shadow-sm rounded-lg border font-sans bg-gradient-to-b from-stone-900/70 to-stone-900/90 border-stone-900/50"
+    class="shadow-sm rounded-lg border font-sans bg-stone-800 border-stone-900/50"
   >
     <div class="m-2">
       <div
         class="flex items-center justify-between p-1 border-b border-stone-300"
       >
-        <h3 class="text-sm font-medium tracking-wide text-stone-300">
+        <h3 class="font-mono text-sm font-bold tracking-wide text-stone-400">
           📄 preview.md
         </h3>
         <span class="text-[10px] font-mono text-stone-400">v1.0</span>
       </div>
-      <label class="block text-xs font-medium text-stone-400 mt-2">
-        Read markdown instantly, 100% offline.
+      <label class="font-mono block text-xs font-light text-stone-400 mt-2">
+        Preview markdown file instantly.<br /><u>100% In-Browser.</u> Your file
+        never leaves your computer 🔏
       </label>
     </div>
-    <div id="file-chooser" class="file-chooser pt-4 pb-4">
+    <div id="file-chooser" class="file-chooser pt-2 pb-4">
       <label
         for="file-chooser"
         id="file-input-label"
-        class="file-input-label text-stone-200 bg-gradient-to-b from-stone-900/90 to-stone-900 border-stone-900/50 border-stone-900 border-solid rounded hover p-2 m-2"
-        >View Now</label
+        class="font-mono file-input-label text-text-sm text-stone-800 bg-stone-400 border-stone-100 font-medium border-solid hover p-1 m-2"
+        >&nbsp;&nbsp;View Now&nbsp;&nbsp;</label
       >
       <input type="file" id="file-input" accept=".md" />
     </div>

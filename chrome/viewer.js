@@ -3,12 +3,6 @@ tailwind.config = {
   content: [],
 };
 
-/* ============================== VARIABLES ============================== */
-
-const params = new URLSearchParams(window.location.search);
-const encodedMarkdown = params.get("md");
-const encodedFileName = params.get("name");
-
 /* ============================== DOM VARIABLES ============================== */
 
 var themeBtn = document.getElementById("theme-btn");
@@ -50,6 +44,8 @@ dyslexicBtn.addEventListener("click", () => {
 /* ============================== ZOOM ============================== */
 
 var currentZoom = 100;
+var zoomOutBtn = document.getElementById("zoom-out-btn");
+var zoomInBtn = document.getElementById("zoom-in-btn");
 
 function applyZoom() {
   var preview = document.getElementById("preview");
@@ -64,14 +60,14 @@ function applyZoom() {
   }
 }
 
-document.getElementById("zoom-in-btn").addEventListener("click", () => {
+zoomInBtn.addEventListener("click", () => {
   if (currentZoom < 200) {
     currentZoom += 10;
     applyZoom();
   }
 });
 
-document.getElementById("zoom-out-btn").addEventListener("click", () => {
+zoomOutBtn.addEventListener("click", () => {
   if (currentZoom > 70) {
     currentZoom -= 10;
     applyZoom();
@@ -80,10 +76,49 @@ document.getElementById("zoom-out-btn").addEventListener("click", () => {
 
 /* ============================== RENDER ============================== */
 
-function renderMarkdown() {
+const params = new URLSearchParams(window.location.search);
+const encodedMarkdown = params.get("md");
+const encodedFileName = params.get("name");
+
+function renderMarkdown(text) {
+
   var preview = document.getElementById("preview");
-  preview.innerHTML = marked.parse(decodeURIComponent(encodedMarkdown));
+
+  preview.innerHTML = marked.parse(text);
+
   preview.querySelectorAll("img").forEach((img) => {
+    if (
+      // todo: separate this if checking with it's own filter method so it is more like funcIsProhibitedSrc(img.src)
+      // and maybe to check if it is an absolute path, better use regex
+      (img.src.startsWith("chrome-extension://") ||
+        img.src.startsWith("moz-extension://") ||
+        img.src.startsWith("file:///") ||
+        img.src.startsWith("C:") ||
+        img.src.startsWith("D:") ||
+        img.src.startsWith("E:") ||
+        img.src.startsWith("F:") ||
+        img.src.startsWith("G:") ||
+        img.src.startsWith("H:")
+      ) &&
+      (!img.src.startsWith("http://") || !img.src.startsWith("https://"))
+    ) {
+      const warningText = document.createElement("p");
+      warningText.style.border = "1px dashed var(--color-accent)";
+      warningText.style.cursor = "help";
+      warningText.style.color = "var(--color-accent)";
+      warningText.style.textAlign = "center";
+      warningText.classList.add("text-xs");
+
+      warningText.innerText =
+        "Unable to load " +
+        new URL(img.src).pathname.replace(/^\/{1}/g, "") +
+        " due to browser security rules.";
+
+      warningText.title =
+        "Image not showing? Browser security blocks direct access to local files (both by relative path or absolute path). Only web URLs can be loaded.";
+      img.parentNode.insertBefore(warningText, img.nextSibling);
+    }
+
     if (!img.getAttribute("width") && !img.getAttribute("height")) {
       img.addEventListener(
         "load",
@@ -95,6 +130,27 @@ function renderMarkdown() {
       );
     }
   });
+
+  preview.querySelectorAll("a").forEach((a) => {
+    if (
+      (a.href.startsWith("chrome-extension://") ||
+        a.href.startsWith("moz-extension://")) &&
+      (!a.href.startsWith("http://") || !a.href.startsWith("https://"))
+    ) {
+      a.setAttribute(
+        "title",
+        "Browser security blocks direct access to local files. Please open this file manually. src:" +
+          new URL(a.href).pathname,
+      );
+      a.style.cursor = "help";
+      a.removeAttribute("href");
+    } else if (!a.target) {
+      a.target = "_blank";
+    }
+  });
+
+  const targetDiv = document.getElementById("preview");
+  targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
 }
 
 function postprocess(html) {
@@ -109,11 +165,20 @@ if (encodedFileName) {
   document.title = "📄 preview.md: " + decodeURIComponent(encodedFileName);
 }
 
-// option 1 - short bcs using url encoding
 if (encodedMarkdown) {
-  renderMarkdown();
-  const targetDiv = document.getElementById("preview");
-  targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
+  renderMarkdown(decodeURIComponent(encodedMarkdown));
 }
 
-// option 2 - using temp storage
+document.addEventListener("DOMContentLoaded", async () => {
+  const result = await chrome.storage.local.get(["previewMdtemporaryMarkdown"]);
+  const markdownText = await result["previewMdtemporaryMarkdown"];
+  if (markdownText) {
+    await renderMarkdown(markdownText);
+    chrome.storage.local.remove(["previewMdtemporaryMarkdown"]);
+  } else {
+    dyslexicBtn.hidden = true;
+    currentZoom += 15;
+    applyZoom();
+    console.error("No Data, close tabs, re open via chrome extension");
+  }
+});

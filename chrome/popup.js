@@ -11,16 +11,20 @@ document
     if (!file) return;
 
     const reader = new FileReader();
-    // 1st option - only able to open short markdown without local data image
-    reader.onload = function (e) {
+    reader.onload = async (e) => {
       const markdownText = e.target.result;
-      const encodedData = encodeURIComponent(markdownText);
       const encodedName = encodeURIComponent(file.name);
-      chrome.tabs.create({
-        url: chrome.runtime.getURL(
-          `viewer.html?name=${encodedName}&md=${encodedData}`,
-        ),
-      });
+
+      try {
+        await chrome.storage.local.set({
+          previewMdtemporaryMarkdown: markdownText,
+        });
+        chrome.tabs.create({
+          url: chrome.runtime.getURL(`viewer.html?name=${encodedName}`),
+        });
+      } catch (error) {
+        console.error("Failure to store to local storage:", error);
+      }
     };
 
     reader.readAsText(file);
