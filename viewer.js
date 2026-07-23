@@ -97,10 +97,19 @@ const params = new URLSearchParams(window.location.search);
 const encodedMarkdown = params.get("md");
 const encodedFileName = params.get("name");
 
+function preProcessMarkdown(text) {
+  return text
+    .replace(/~{1}([^~\t\n\r\s])+~{1}\b/g, "<sub>$1</sub>")
+    .replace(/\^([^^]+)\^/g, "<sup>$1</sup>");
+}
+
 function renderMarkdown(text) {
   var preview = getPreviewSection();
 
+  text = preProcessMarkdown(text);
+
   marked.options({ gfm: true, pedantic: false, breaks: false });
+
   preview.innerHTML = marked.parse(text);
 
   preview.querySelectorAll("img").forEach((img) => {
@@ -164,16 +173,6 @@ function renderMarkdown(text) {
       a.target = "_blank";
     }
   });
-
-  const targetDiv = getPreviewSection();
-  targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
-}
-
-function postprocess(html) {
-  let processedHtml = html
-    .replace(/==([^=]+)==/g, "<mark>$1</mark>")
-    .replace(/\^([^^]+)\^/g, "<sup>$1</sup>");
-  return processedHtml;
 }
 
 if (encodedFileName) {
