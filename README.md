@@ -29,38 +29,52 @@ Due to **built-in browser security restrictions** (Browser Security Sandbox), th
 
 - **Heading Links:** Anchor links for document section navigation are not yet generated.
 - **Footers:** Layout does not render document footer blocks.
-- **GitHub-Flavored Markdown (GFM):** This extension parses standard Markdown syntax. It does not fully support GitHub-Flavored Markdown (GFM) extensions such as custom autolinks, custom block quote, etc.
+- **GitHub-Flavored Markdown (GFM):** This extension parses standard Markdown syntax. It does not fully support GitHub-Flavored Markdown (GFM) extensions such as custom autolinks, custom block quote, custom emojis, etc.
 
 If you want to help implement these features or fix bugs, feel free to fork the repository and submit a pull request.
 
 ## Installation
 
-### From Chrome Web Store
+### From Browser Extension's Marketplace
 
-Currently working on it. Stay tune for next update.
-
-### From Mozilla Firefox Browser Addons
-
-Currently working on it. Stay tune for next update.
+- Chrome Web Store: Currently working on it. Stay tune for next update.
+- Mozilla Firefox Addons: Currently working on it. Stay tune for next update.
 
 ### From Source (Developer Mode)
 
-#### Chrome
-1. Clone or download this repository.
-2. Install all the dependencies in package-lock.json by running `npm install`
-3. Build the extension by `npm run build`
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer mode** (top-right toggle).
-4. Click **Load unpacked** and select the extension folder.
+#### 0. Prerequisite
 
-#### Mozilla
-1. Clone or download this repository.
-2. Install all the dependencies in package-lock.json by running `npm install`
-3. Build the extension by `npm install`
-4. Open Mozilla and navigate to `about:debugging#/runtime/this-firefox`.
-5. **Load Temporary Add-on** and select the extension folder.
-6. For Debugging mode, **always "Disable popup auto-hide"** so that the popup does not close automatically when the file picker window appears. The extension will not function correctly because the window focus gets interrupted, causing Firefox's garbage collector to immediately terminate the JavaScript process before the extension's command can be fully sent.
-7. To disable popup auto hide, press "Inspect" button on the `preview.md` extension on page `about:debugging#/runtime/this-firefox`, once the dev tool window shown, press the triple dot symbol inside the dev tool window, then select "Disable Popup Auto-Hide"
+These software must be installed on your device to be able to follow this tutorial:
+
+- Install [Node.js with npm](https://nodejs.org/en/download) (I personally use node js v24.16.0)
+- For minimalist linux distro: ensure you already had zip utility installed by running this command `sudo apt install zip`
+
+#### 1. Build
+1. Clone or download this repository
+2. Unzip (if necessary) and/or open repository
+3. Open terminal in the root of this reposiory
+4. Install all the dependencies in `package-lock.json` by running command `npm install` on your terminal
+5. Continue build the extension by `npm run build:pack` (for linux, macos) or `npm run build:pack-windows` (for windows device)
+6. The bundled file will be stored at `/dist` the `.zip` file of the bundled file will be stored at root file with name `build-previewmd.zip`
+
+#### 2. Install
+
+#### 2b. Install: on Chrome
+
+continue from `1. Build` section
+
+1. Open Chrome and navigate to `chrome://extensions/`.
+2. Enable **Developer mode** (top-right toggle).
+3. Click **Load unpacked** and select the `dist` folder
+
+#### 2b. Install: on Mozilla
+
+continue from `1. Build` section
+
+1. Open Mozilla and navigate to `about:debugging#/runtime/this-firefox` to open debugging mode.
+2. **Load Temporary Add-on**  and select the `manifest.json` on the `dist` folder or select the `build-previewmd.zip`
+3. For Debugging mode, **always "Disable popup auto-hide"** so that the popup does not close automatically when the file picker window appears. The extension will not function correctly because the window focus gets interrupted, causing Firefox's garbage collector to immediately terminate the JavaScript process before the extension's command can be fully sent.
+4. To disable popup auto hide, press "Inspect" button on the `preview.md` extension on page `about:debugging#/runtime/this-firefox`, once the dev tool window shown, press the triple dot symbol inside the dev tool window, then select "Disable Popup Auto-Hide"
 
 ## Usage
 
@@ -82,7 +96,7 @@ This project is built with modern web technologies and tools for browser extensi
 
 A sample Markdown file is included in this repository for testing.
 
-1. Download or locate `markdown-cheat-sheet.md` [here](markdown-cheat-sheet.md).
+1. Download or locate `docs\markdown-cheat-sheet.md` [here](docs/markdown-cheat-sheet.md).
 2. Open the extension, click **View Now**, and select that file to test the layout, tables, task lists, and Easy Mode functionality instantly.
 
 ## License

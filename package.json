@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "npm run build:chrome",
     "build:chrome": "vite build --mode chrome",
-    "build:mozilla": "vite build --mode mozilla"
+    "build:mozilla": "vite build --mode mozilla",
+    "build:pack-windows": "npm run build:chrome && cd dist && tar -caf ../build-previewmd.zip * & cd .",
+    "build:pack": "npm run build:chrome && cd dist && zip -r ../build-preview.zip . & cd ."
   },
   "repository": {
     "type": "git",
