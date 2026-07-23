@@ -9,7 +9,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "@preview.md_markdown-viewer",
+      "id": "@preview-md-markdown-viewer",
       "data_collection_permissions": {
         "required": ["none"]
       }
