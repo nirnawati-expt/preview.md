@@ -1,6 +1,6 @@
-import { marked } from 'marked';
+import { marked } from "marked";
 import browser from "webextension-polyfill";
-import { ACTION,TEMP_STORAGE_NAME, CSS_THEME_CLASS } from './const';
+import { ACTION, TEMP_STORAGE_NAME, CSS_THEME_CLASS } from "./const";
 
 /* ============================== DOM VARIABLES ============================== */
 
@@ -13,15 +13,17 @@ function getThemeBtn() {
 }
 
 function getDyslexicBtn() {
-  return document.getElementById("dyslexic-btn")
+  return document.getElementById("dyslexic-btn");
 }
 
 function getPreviewSection() {
   return document.getElementById("preview");
 }
+
 function getZoomOutBtn() {
   return document.getElementById("zoom-out-btn");
 }
+
 function getZoomInBtn() {
   return document.getElementById("zoom-in-btn");
 }
@@ -96,9 +98,9 @@ const encodedMarkdown = params.get("md");
 const encodedFileName = params.get("name");
 
 function renderMarkdown(text) {
-
   var preview = getPreviewSection();
 
+  marked.options({ gfm: true, pedantic: false, breaks: false });
   preview.innerHTML = marked.parse(text);
 
   preview.querySelectorAll("img").forEach((img) => {
@@ -113,8 +115,7 @@ function renderMarkdown(text) {
         img.src.startsWith("E:") ||
         img.src.startsWith("F:") ||
         img.src.startsWith("G:") ||
-        img.src.startsWith("H:")
-      ) &&
+        img.src.startsWith("H:")) &&
       (!img.src.startsWith("http://") || !img.src.startsWith("https://"))
     ) {
       const warningText = document.createElement("p");
@@ -171,8 +172,7 @@ function renderMarkdown(text) {
 function postprocess(html) {
   let processedHtml = html
     .replace(/==([^=]+)==/g, "<mark>$1</mark>")
-    .replace(/\^([^^]+)\^/g, "<sup>$1</sup>")
-    .replace(/<del>([\s\S]*?)<\/del>/g, "<sub>$1</sub>");
+    .replace(/\^([^^]+)\^/g, "<sup>$1</sup>");
   return processedHtml;
 }
 

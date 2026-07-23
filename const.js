@@ -1,4 +1,4 @@
-export const TEMP_STORAGE_NAME = 'previewMdtemporaryMarkdown';
+export const TEMP_STORAGE_NAME = "previewMdtemporaryMarkdown";
 
 export const CSS_THEME_CLASS = Object.freeze({
   DARK: "dark",
@@ -6,6 +6,6 @@ export const CSS_THEME_CLASS = Object.freeze({
 });
 
 export const ACTION = Object.freeze({
-    CLICK: "click",
-    LOAD_CONTENT: "DOMContentLoaded",
+  CLICK: "click",
+  LOAD_CONTENT: "DOMContentLoaded",
 });
