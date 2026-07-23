@@ -1,53 +1,70 @@
 import { marked } from 'marked';
-
+import browser from "webextension-polyfill";
+import { ACTION,TEMP_STORAGE_NAME, CSS_THEME_CLASS } from './const';
 
 /* ============================== DOM VARIABLES ============================== */
 
-var themeBtn = document.getElementById("theme-btn");
-var dyslexicBtn = document.getElementById("dyslexic-btn");
-var htmlTag = document.documentElement;
+function getHtmlTag() {
+  return document.documentElement;
+}
+
+function getThemeBtn() {
+  return document.getElementById("theme-btn");
+}
+
+function getDyslexicBtn() {
+  return document.getElementById("dyslexic-btn")
+}
+
+function getPreviewSection() {
+  return document.getElementById("preview");
+}
+function getZoomOutBtn() {
+  return document.getElementById("zoom-out-btn");
+}
+function getZoomInBtn() {
+  return document.getElementById("zoom-in-btn");
+}
 
 /* ============================== TOGGLE ============================== */
 
-themeBtn.addEventListener("click", () => {
-  if (htmlTag.classList.contains("dark")) {
-    htmlTag.classList.remove("dark");
-    themeBtn.innerText = "☀️";
-    themeBtn.ariaLabel = "current-mode-light";
+getThemeBtn().addEventListener(ACTION.CLICK, () => {
+  if (getHtmlTag().classList.contains(CSS_THEME_CLASS.DARK)) {
+    getHtmlTag().classList.remove(CSS_THEME_CLASS.DARK);
+    getThemeBtn().innerText = "☀️";
+    getThemeBtn().ariaLabel = "current-mode-light";
   } else {
-    htmlTag.classList.add("dark");
-    themeBtn.innerText = "\uD83C\uDF19";
-    themeBtn.ariaLabel = "current-mode-dark";
+    getHtmlTag().classList.add(CSS_THEME_CLASS.DARK);
+    getThemeBtn().innerText = "\uD83C\uDF19";
+    getThemeBtn().ariaLabel = "current-mode-dark";
   }
 });
 
-dyslexicBtn.addEventListener("click", () => {
-  if (document.body.classList.contains("dyslexic-mode")) {
-    document.body.classList.remove("dyslexic-mode");
-    dyslexicBtn.innerText = "Easy Read OFF";
-    dyslexicBtn.classList.add("bg-orange-800");
-    dyslexicBtn.classList.add("hover:bg-orange-900");
-    dyslexicBtn.classList.remove("bg-orange-600");
-    dyslexicBtn.classList.remove("hover:bg-orange-700");
+getDyslexicBtn().addEventListener(ACTION.CLICK, () => {
+  if (document.body.classList.contains(CSS_THEME_CLASS.DYSLEXIC_MODE)) {
+    document.body.classList.remove(CSS_THEME_CLASS.DYSLEXIC_MODE);
+    getDyslexicBtn().innerText = "Easy Read OFF";
+    getDyslexicBtn().classList.add("bg-orange-800");
+    getDyslexicBtn().classList.add("hover:bg-orange-900");
+    getDyslexicBtn().classList.remove("bg-orange-600");
+    getDyslexicBtn().classList.remove("hover:bg-orange-700");
   } else {
-    document.body.classList.add("dyslexic-mode");
-    dyslexicBtn.innerText = "Easy Read ON";
-    dyslexicBtn.classList.add("bg-orange-600");
-    dyslexicBtn.classList.add("hover:bg-orange-700");
-    dyslexicBtn.classList.remove("bg-orange-800");
-    dyslexicBtn.classList.remove("hover:bg-orange-900");
+    document.body.classList.add(CSS_THEME_CLASS.DYSLEXIC_MODE);
+    getDyslexicBtn().innerText = "Easy Read ON";
+    getDyslexicBtn().classList.add("bg-orange-600");
+    getDyslexicBtn().classList.add("hover:bg-orange-700");
+    getDyslexicBtn().classList.remove("bg-orange-800");
+    getDyslexicBtn().classList.remove("hover:bg-orange-900");
   }
 });
 
 /* ============================== ZOOM ============================== */
 
 var currentZoom = 100;
-var zoomOutBtn = document.getElementById("zoom-out-btn");
-var zoomInBtn = document.getElementById("zoom-in-btn");
 
 function applyZoom() {
-  var preview = document.getElementById("preview");
-  if (document.body.classList.contains("dyslexic-mode")) {
+  var preview = getPreviewSection();
+  if (document.body.classList.contains(CSS_THEME_CLASS.DYSLEXIC_MODE)) {
     preview.style.fontSize = `${1.25 * (currentZoom / 100)}rem`;
     preview.style.lineHeight = `${1.75 * (currentZoom / 100)}rem`;
     preview.style.lineBreak = `${2.25 * (currentZoom / 100)}rem`;
@@ -58,14 +75,14 @@ function applyZoom() {
   }
 }
 
-zoomInBtn.addEventListener("click", () => {
+getZoomInBtn().addEventListener(ACTION.CLICK, () => {
   if (currentZoom < 200) {
     currentZoom += 10;
     applyZoom();
   }
 });
 
-zoomOutBtn.addEventListener("click", () => {
+getZoomOutBtn().addEventListener(ACTION.CLICK, () => {
   if (currentZoom > 70) {
     currentZoom -= 10;
     applyZoom();
@@ -80,7 +97,7 @@ const encodedFileName = params.get("name");
 
 function renderMarkdown(text) {
 
-  var preview = document.getElementById("preview");
+  var preview = getPreviewSection();
 
   preview.innerHTML = marked.parse(text);
 
@@ -147,7 +164,7 @@ function renderMarkdown(text) {
     }
   });
 
-  const targetDiv = document.getElementById("preview");
+  const targetDiv = getPreviewSection();
   targetDiv.outerHTML = postprocess(targetDiv.outerHTML);
 }
 
@@ -167,14 +184,14 @@ if (encodedMarkdown) {
   renderMarkdown(decodeURIComponent(encodedMarkdown));
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const result = await chrome.storage.local.get(["previewMdtemporaryMarkdown"]);
-  const markdownText = await result["previewMdtemporaryMarkdown"];
+document.addEventListener(ACTION.LOAD_CONTENT, async () => {
+  const result = await browser.storage.local.get([TEMP_STORAGE_NAME]);
+  const markdownText = await result[TEMP_STORAGE_NAME];
   if (markdownText) {
     await renderMarkdown(markdownText);
-    chrome.storage.local.remove(["previewMdtemporaryMarkdown"]);
+    browser.storage.local.remove([TEMP_STORAGE_NAME]);
   } else {
-    dyslexicBtn.hidden = true;
+    getDyslexicBtn().hidden = true;
     currentZoom += 15;
     applyZoom();
     console.error("No Data, close tabs, re open via chrome extension");
