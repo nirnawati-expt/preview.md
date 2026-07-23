@@ -1,0 +1,30 @@
+{
+  "name": "preview.md",
+  "version": "1.0.0",
+  "description": "A free and minimalist browser extension to read local Markdown files instantly. 100% Client-Side. Your Data Never Leaves Your Browser.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-2:nirnawati-expt/preview.md.git"
+  },
+  "keywords": [],
+  "author": "noviirnawati.work@gmail.com",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "marked": "^18.0.7"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.7.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.22",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.1.5"
+  }
+}

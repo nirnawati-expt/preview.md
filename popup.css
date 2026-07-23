@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body {
+  width: 320px;
+}
+
+.file-chooser input[type="file"] {
+  display: none;
+}
+
+.file-input-label {
+  cursor: pointer;
+}

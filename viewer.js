@@ -1,7 +1,5 @@
-tailwind.config = {
-  darkMode: "class",
-  content: [],
-};
+import { marked } from 'marked';
+
 
 /* ============================== DOM VARIABLES ============================== */
 

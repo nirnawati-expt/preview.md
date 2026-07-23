@@ -3,18 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>📄 preview.md - Markdown Viewer</title>
-    <script src="tailwind.js"></script>
-    <style>
-      body {
-        width: 320px;
-      }
-      .file-chooser input[type="file"] {
-        display: none;
-      }
-      .file-input-label {
-        cursor: pointer;
-      }
-    </style>
+    <link href="popup.css" rel="stylesheet" />
+    <script src="popup.js" type="module"></script>
   </head>
   <body
     class="shadow-sm rounded-lg border font-sans bg-stone-800 border-stone-900/50"
@@ -43,5 +33,4 @@
       <input type="file" id="file-input" accept=".md" />
     </div>
   </body>
-  <script src="popup.js"></script>
 </html>
