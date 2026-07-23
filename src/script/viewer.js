@@ -104,6 +104,17 @@ function preProcessMarkdown(text) {
     .replace(/\^([^^]+)\^/g, "<sup>$1</sup>");
 }
 
+
+function isSrcProhibited(src) {
+  if (src.startsWith("http://") || src.startsWith("https://")) return false;
+
+  if (src.startsWith("chrome-extension://") || src.startsWith("moz-extension://")) return true;
+
+  if (src.startsWith("./") || src.startsWith("/")) return true;
+
+  return true;
+}
+
 function renderMarkdown(text) {
   var preview = getPreviewSection();
 
@@ -114,35 +125,15 @@ function renderMarkdown(text) {
   preview.innerHTML = DOMPurify.sanitize(marked.parse(text));
 
   preview.querySelectorAll("img").forEach((img) => {
-    if (
-      // todo: separate this if checking with it's own filter method so it is more like funcIsProhibitedSrc(img.src)
-      // and maybe to check if it is an absolute path, better use regex
-      (img.src.startsWith("chrome-extension://") ||
-        img.src.startsWith("moz-extension://") ||
-        img.src.startsWith("file:///") ||
-        img.src.startsWith("C:") ||
-        img.src.startsWith("D:") ||
-        img.src.startsWith("E:") ||
-        img.src.startsWith("F:") ||
-        img.src.startsWith("G:") ||
-        img.src.startsWith("H:")) &&
-      (!img.src.startsWith("http://") || !img.src.startsWith("https://"))
-    ) {
-      const warningText = document.createElement("p");
-      warningText.style.border = "1px dashed var(--color-accent)";
-      warningText.style.cursor = "help";
-      warningText.style.color = "var(--color-accent)";
-      warningText.style.textAlign = "center";
-      warningText.classList.add("text-xs");
+    if (isSrcProhibited(img.src) || !img.src || img.src.trim() === '') {
+      let msg = "Unable to load image due to browser security rules.";
+      let info = "Image not showing? Browser security blocks direct access to local files (both by relative path or absolute path). Only web URLs can be loaded.";
 
-      warningText.innerText =
-        "Unable to load " +
-        new URL(img.src).pathname.replace(/^\/{1}/g, "") +
-        " due to browser security rules.";
-
-      warningText.title =
-        "Image not showing? Browser security blocks direct access to local files (both by relative path or absolute path). Only web URLs can be loaded.";
-      img.parentNode.insertBefore(warningText, img.nextSibling);
+      img.title = info;
+      img.style.cursor = "help";
+      img.style.border = "1px dashed var(--color-accent)";
+      img.style.padding = "0.85rem";
+      img.alt += ". (info: " + msg + ")"
     }
 
     if (!img.getAttribute("width") && !img.getAttribute("height")) {
@@ -158,15 +149,10 @@ function renderMarkdown(text) {
   });
 
   preview.querySelectorAll("a").forEach((a) => {
-    if (
-      (a.href.startsWith("chrome-extension://") ||
-        a.href.startsWith("moz-extension://")) &&
-      (!a.href.startsWith("http://") || !a.href.startsWith("https://"))
-    ) {
+    if (isSrcProhibited(a.href)|| !a.href || a.href.trim() === '') {
       a.setAttribute(
         "title",
-        "Browser security blocks direct access to local files. Please open this file manually. src:" +
-          new URL(a.href).pathname,
+        "Browser security blocks direct access to local files. Please open this file manually.",
       );
       a.style.cursor = "help";
       a.removeAttribute("href");

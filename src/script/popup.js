@@ -32,7 +32,7 @@ getInputFile().addEventListener(ACTION.CHANGE, function (event) {
           ),
         })
         .catch((error) => {
-          console.error("Gagal membuka tab:", error);
+          console.error("Failure opening tab:", error);
         });
     } catch (error) {
       console.error("Failure to store to local storage:", error);
