@@ -118,7 +118,7 @@ I need to highlight these ==very important words==.
 
 ### Subscript
 
-H~~2~~O
+H~2~O
 
 ### Superscript
 

@@ -1,33 +1,32 @@
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
-  const isMozilla = mode === "mozilla";
-  const outDir = isMozilla ? "dist_mozilla" : "dist_chrome";
-  const manifestFile = isMozilla
-    ? "manifest.mozilla.json"
-    : "manifest.chrome.json";
-  const zipName = isMozilla ? "previewmd_mozilla.zip" : "previewmd_chrome.zip";
+  const browser = mode === "mozilla" ? "_mozilla" : "_chrome"; // for future development if need to separate between browsers
+  const outDir = "dist";
+  const manifest = "manifest.json";
 
   return {
+    root: './src',
     plugins: [
       viteStaticCopy({
         targets: [
           {
-            src: manifestFile,
-            dest: ".",
-            rename: "manifest.json",
+            src: "../" + manifest,
+            dest: outDir,
           },
         ],
       }),
     ],
     build: {
-      outDir: outDir,
+      outDir: "../" + outDir,
+      emptyOutDir: true,
       rollupOptions: {
         input: {
-          popup: "popup.html",
-          viewer: "viewer.html",
-        },
+          popup: resolve(__dirname, 'src/popup.html'),
+          viewer: resolve(__dirname, 'src/viewer.html'),
+        }
       },
     },
   };

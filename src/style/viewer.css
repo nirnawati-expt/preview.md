@@ -218,6 +218,7 @@ h6 {
 
 .dyslexic-mode .w-full {
   justify-items: center !important;
+  display: inline-grid;
 }
 
 .dyslexic-mode .preview-content,

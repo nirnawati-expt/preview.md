@@ -1,6 +1,6 @@
 # preview.md - Markdown Viewer on your Browser
 
-A free and minimalist browser extension to read local Markdown files instantly. 100% Client-Side. Your Data Never Leaves Your Browser. Currently available for Chrome.
+A free and minimalist browser extension to read local Markdown files instantly. 100% Client-Side. Your Data Never Leaves Your Browser. Currently available for Chrome & Mozilla.
 
 ## Features
 
@@ -39,12 +39,28 @@ If you want to help implement these features or fix bugs, feel free to fork the 
 
 Currently working on it. Stay tune for next update.
 
+### From Mozilla Firefox Browser Addons
+
+Currently working on it. Stay tune for next update.
+
 ### From Source (Developer Mode)
 
+#### Chrome
 1. Clone or download this repository.
+2. Install all the dependencies in package-lock.json by running `npm install`
+3. Build the extension by `npm run build`
 2. Open Chrome and navigate to `chrome://extensions/`.
 3. Enable **Developer mode** (top-right toggle).
 4. Click **Load unpacked** and select the extension folder.
+
+#### Mozilla
+1. Clone or download this repository.
+2. Install all the dependencies in package-lock.json by running `npm install`
+3. Build the extension by `npm install`
+4. Open Mozilla and navigate to `about:debugging#/runtime/this-firefox`.
+5. **Load Temporary Add-on** and select the extension folder.
+6. For Debugging mode, **always "Disable popup auto-hide"** so that the popup does not close automatically when the file picker window appears. The extension will not function correctly because the window focus gets interrupted, causing Firefox's garbage collector to immediately terminate the JavaScript process before the extension's command can be fully sent.
+7. To disable popup auto hide, press "Inspect" button on the `preview.md` extension on page `about:debugging#/runtime/this-firefox`, once the dev tool window shown, press the triple dot symbol inside the dev tool window, then select "Disable Popup Auto-Hide"
 
 ## Usage
 
@@ -54,11 +70,13 @@ Currently working on it. Stay tune for next update.
 
 ## Tech Stack
 
-This project is built using the following core technologies:
+This project is built with modern web technologies and tools for browser extension development:
 
-- **[Marked.js](https://marked.js.org/)**: A fast and lightweight Markdown compiler for parsing Markdown content entirely client-side.
-- **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for rapid and responsive UI styling.
-- **Pure JavaScript / HTML5** - 100% client-side execution ensures your data is processed locally and never leaves your browser.
+* **Core & Logic:** [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **Bundler & Build Tool:** [Vite](https://vite.dev/)
+* **Extension Polyfill:** [WebExtension Polyfill](https://github.com/mozilla/webextension-polyfill) for cross-browser compatibility
+* **Markdown Parser:** [Marked](https://marked.js.org/) for rendering Markdown content
 
 ## Testing the Extension
 
