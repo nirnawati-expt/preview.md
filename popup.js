@@ -25,9 +25,15 @@ getInputFile().addEventListener(ACTION.CHANGE, function (event) {
       await browser.storage.local.set({
         previewMdtemporaryMarkdown: markdownText,
       });
-      browser.tabs.create({
-        url: browser.runtime.getURL(`${VIEWER_PAGE_NAME}?name=${encodedName}`),
-      });
+      await browser.tabs
+        .create({
+          url: browser.runtime.getURL(
+            `/${VIEWER_PAGE_NAME}?name=${encodedName}`,
+          ),
+        })
+        .catch((error) => {
+          console.error("Gagal membuka tab:", error);
+        });
     } catch (error) {
       console.error("Failure to store to local storage:", error);
     }
