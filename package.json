@@ -21,6 +21,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "isomorphic-dompurify": "^3.19.0",
     "marked": "^18.0.7",
     "webextension-polyfill": "^0.12.0"
   },

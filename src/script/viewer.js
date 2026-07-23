@@ -1,6 +1,7 @@
 import { marked } from "marked";
 import browser from "webextension-polyfill";
 import { ACTION, TEMP_STORAGE_NAME, CSS_THEME_CLASS } from "./const";
+import DOMPurify from 'isomorphic-dompurify';
 
 /* ============================== DOM VARIABLES ============================== */
 
@@ -110,7 +111,7 @@ function renderMarkdown(text) {
 
   marked.options({ gfm: true, pedantic: false, breaks: false });
 
-  preview.innerHTML = marked.parse(text);
+  preview.innerHTML = DOMPurify.sanitize(marked.parse(text));
 
   preview.querySelectorAll("img").forEach((img) => {
     if (
